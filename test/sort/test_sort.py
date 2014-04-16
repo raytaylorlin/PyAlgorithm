@@ -3,11 +3,12 @@
 
 import random
 import unittest
+from test.util import getCases
 
+
+TEST_CASE_DIR = 'data'
 
 class TestSorting(unittest.TestCase):
     def setUp(self):
-        self.input = range(10)
-        random.shuffle(self.input)
-        print 'Sorting unit test data: ', self.input
-        self.correct = range(10)
+        self.cases = getCases(TEST_CASE_DIR)
+        # print self.cases
