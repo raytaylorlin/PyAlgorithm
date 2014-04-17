@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+import difflib
 from algorithm.sort.merge_sort import mergeSort
 from test_sort import *
 
+
 class TestMergeSort(TestSorting):
+
     def testMergeSort(self):
         self.input = range(10)
         random.shuffle(self.input)
@@ -18,14 +21,18 @@ class TestMergeSort(TestSorting):
 
     def testMergeSortCase(self):
         for inputFile, answerFile in self.cases:
-            with open(inputFile) as file:
-                self.input = file.read()
-            with open(answerFile) as file:
-                self.correct = file.read()
-            self.input = map(int, self.input.split('\n'))
+            print '*' * 20
+            print 'Test case: ' + inputFile
+            self.input = self.getStandardData(inputFile)
+            self.correct = self.getStandardData(answerFile)
             self.output = mergeSort(self.input)
-            self.correct = map(int, self.correct.split('\n'))
-            self.assertEqual(self.correct, self.output)
+
+            diff = difflib.context_diff(
+                map(str, self.correct), map(str, self.output),
+                fromfile='answer', tofile='result', n=1)
+            diffResult = '\n'.join(diff)
+            print diffResult
+            self.assertTrue(len(diffResult) == 0, 'Wrong answer!')
 
 
 if __name__ == '__main__':
