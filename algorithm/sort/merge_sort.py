@@ -47,11 +47,3 @@ def mergeSort(data):
     # 递归中止条件：数组只有1个元素
     else:
         return data
-
-if __name__ == '__main__':
-    with open('IntegerArray.txt') as file:
-        data = map(int, file.readlines())
-        result = mergeSort(data)
-        with open('result.txt', 'w') as output:
-            for num in result:
-                output.write(str(num) + '\n')
