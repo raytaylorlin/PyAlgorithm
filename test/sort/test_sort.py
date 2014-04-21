@@ -3,7 +3,6 @@
 
 import random
 import unittest
-import difflib
 import test.util as util
 
 
@@ -23,9 +22,6 @@ class TestSorting(unittest.TestCase):
             self.correct = util.readFileAndStandardize(answerFile, standardize)
             self.output = sortFunc(self.input)
 
-            diff = difflib.context_diff(
-                map(str, self.correct), map(str, self.output),
-                fromfile='answer', tofile='result', n=1)
-            diffResult = '\n'.join(diff)
+            diffResult = util.compareAnswerOutput(self.correct, self.output)
             print diffResult
             self.assertTrue(len(diffResult) == 0, 'Wrong answer!')
