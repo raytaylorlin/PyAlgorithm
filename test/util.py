@@ -3,6 +3,7 @@
 
 
 import os
+import difflib
 
 CASE_FILE_SUFFIX = '.in'
 ANSWER_FILE_SUFFIX = '.ans'
@@ -37,3 +38,18 @@ def readFileAndStandardize(filename, standardizeFunc):
     with open(filename) as file:
         data = file.read()
         return standardizeFunc(data)
+
+
+def compareAnswerOutput(answer, output):
+    """比较答案和输出的差异
+    Args:
+        answer: 答案对象
+        output: 输出对象
+    Return:
+        两者比较的差异
+    """
+    diff = difflib.context_diff(
+        map(str, answer), map(str, output),
+        fromfile='answer', tofile='result', n=1)
+    diffResult = '\n'.join(diff)
+    return diffResult
