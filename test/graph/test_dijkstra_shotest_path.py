@@ -3,15 +3,21 @@
 
 import unittest
 import test.util as util
-import difflib
 from algorithm.graph.dijkstra_shotest_path import *
 
+logger = util.getLogger('test.graph.dijkstra')
 
-class TestDijkstra(unittest.TestCase):
+
+class TestDijkstra(util.PyAlgorithmTestCase):
+    TEST_CASE_FORMAT = '''
+    Input: graph = %s
+    Input: start vertex = %s
+    Result: %s
+    '''
 
     def setUp(self):
+        super(TestDijkstra, self).setUp(logger)
         self.cases = util.getInputAnswerCases('data', 'dijkstra')
-        print "\n[TEST]", self.shortDescription()
 
     def testBaseCase(self):
         u"""测试正常情况"""
@@ -28,11 +34,9 @@ class TestDijkstra(unittest.TestCase):
             3: 3,
             4: 6
         }
-
-        print 'Input: graph = {0}'.format(graph)
-        print 'Input: start vertex = {0}'.format(start)
         self.output = dijkstraShortestPath(graph, start)
-        print 'Result: ', self.output
+
+        logger.debug(TestDijkstra.TEST_CASE_FORMAT, graph, start, self.output)
         self.assertEqual(self.correct, self.output)
 
     def testSomeVerticeUnreachable(self):
@@ -49,11 +53,9 @@ class TestDijkstra(unittest.TestCase):
             3: 2,
             4: INFINITY
         }
-
-        print 'Input: graph = {0}'.format(graph)
-        print 'Input: start vertex = {0}'.format(start)
         self.output = dijkstraShortestPath(graph, start)
-        print 'Result: ', self.output
+
+        logger.debug(TestDijkstra.TEST_CASE_FORMAT, graph, start, self.output)
         self.assertEqual(self.correct, self.output)
 
     def testAllVerticesUnreachable(self):
@@ -71,6 +73,8 @@ class TestDijkstra(unittest.TestCase):
             4: INFINITY
         }
         self.output = dijkstraShortestPath(graph, start)
+
+        logger.debug(TestDijkstra.TEST_CASE_FORMAT, graph, start, self.output)
         self.assertEqual(self.correct, self.output)
 
     # @unittest.skip('test from file')
@@ -107,4 +111,4 @@ class TestDijkstra(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=1)
