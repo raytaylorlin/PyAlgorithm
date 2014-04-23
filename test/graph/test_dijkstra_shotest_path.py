@@ -87,7 +87,8 @@ class TestDijkstra(util.PyAlgorithmTestCase):
                 data = line.strip().split(' ')
                 graph[int(data[0])] = [(int(edge.split(',')[0]), int(edge.split(',')[1]))
                                        for edge in data[1:]]
-            return graph
+            # 此处默认起点为顶点1
+            return {'graph': graph, 'start': 1}
 
         def standaradizeAnswer(content):
             pathLength = {}
@@ -96,18 +97,8 @@ class TestDijkstra(util.PyAlgorithmTestCase):
                 pathLength[int(edge[0])] = int(edge[1])
             return pathLength
 
-        for inputFile, answerFile in self.cases:
-            print '*' * 20
-            print 'Test case: ' + inputFile
-            self.input = util.readFileAndStandardize(
-                inputFile, standardizeInput)
-            self.correct = util.readFileAndStandardize(
-                answerFile, standaradizeAnswer)
-            self.output = dijkstraShortestPath(self.input, 1)
-
-            diffResult = util.compareAnswerOutput(self.correct, self.output)
-            print diffResult
-            self.assertTrue(len(diffResult) == 0, 'Wrong answer!')
+        self._testFileCase(
+            dijkstraShortestPath, standardizeInput, standaradizeAnswer)
 
 
 if __name__ == '__main__':
