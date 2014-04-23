@@ -18,6 +18,20 @@ class PyAlgorithmTestCase(unittest.TestCase):
     def setUp(self, logger):
         logger.info('%s', self.shortDescription())
 
+    def _testFileCase(self, algoFunc, standardizeInput, standaradizeAnswer):
+        for inputFile, answerFile in self.cases:
+            print '*' * 20
+            print 'Test case:', inputFile
+            self.input = readFileAndStandardize(
+                inputFile, standardizeInput)
+            self.correct = readFileAndStandardize(
+                answerFile, standaradizeAnswer)
+            self.output = algoFunc(**self.input)
+
+            diffResult = compareAnswerOutput(self.correct, self.output)
+            print diffResult
+            self.assertTrue(len(diffResult) == 0, 'Wrong answer!')
+
 
 def getInputAnswerCases(directory, algoName):
     """获取测试输入和答案文件列表
