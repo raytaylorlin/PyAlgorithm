@@ -3,10 +3,20 @@
 
 
 import os
+import unittest
 import difflib
+import logging
 
 CASE_FILE_SUFFIX = '.in'
 ANSWER_FILE_SUFFIX = '.ans'
+
+
+class PyAlgorithmTestCase(unittest.TestCase):
+
+    """公共的TestCase父类"""
+
+    def setUp(self, logger):
+        logger.info('%s', self.shortDescription())
 
 
 def getInputAnswerCases(directory, algoName):
@@ -53,3 +63,13 @@ def compareAnswerOutput(answer, output):
         fromfile='answer', tofile='result', n=1)
     diffResult = '\n'.join(diff)
     return diffResult
+
+
+def getLogger(name):
+    """获取一个日志记录器
+    Args:
+        name: 日志记录器的名称
+    """
+    logging.basicConfig(
+        format='\n[%(levelname)s] %(message)s', level=logging.DEBUG)
+    return logging.getLogger(name)
