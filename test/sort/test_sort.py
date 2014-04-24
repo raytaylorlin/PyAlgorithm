@@ -5,23 +5,20 @@ import random
 import unittest
 import test.util as util
 
+logger = util.getLogger('test.sort')
 
-class TestSorting(unittest.TestCase):
+
+class TestSorting(util.PyAlgorithmTestCase):
 
     def setUp(self):
+        super(TestSorting, self).setUp(logger)
         self.cases = util.getInputAnswerCases('data', 'sort')
 
     def _testSortingCase(self, sortFunc):
-        def standardize(content):
+        def standardizeInput(content):
+            return {'data': list(map(int, content.split('\n')))}
+
+        def standardizeAnswer(content):
             return list(map(int, content.split('\n')))
 
-        for inputFile, answerFile in self.cases:
-            print '*' * 20
-            print 'Test case: ' + inputFile
-            self.input = util.readFileAndStandardize(inputFile, standardize)
-            self.correct = util.readFileAndStandardize(answerFile, standardize)
-            self.output = sortFunc(self.input)
-
-            diffResult = util.compareAnswerOutput(self.correct, self.output)
-            print diffResult
-            self.assertTrue(len(diffResult) == 0, 'Wrong answer!')
+        self._testFileCase(sortFunc, standardizeInput, standardizeAnswer)

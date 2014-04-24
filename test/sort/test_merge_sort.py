@@ -9,6 +9,8 @@ from test_sort import *
 class TestMergeSort(TestSorting):
 
     def testBaseCase(self):
+        u"""测试正常情况（随机产生10个数）"""
+
         self.input = range(10)
         random.shuffle(self.input)
         print 'Sorting unit test data: ', self.input
@@ -19,6 +21,8 @@ class TestMergeSort(TestSorting):
         self.assertEqual(self.correct, self.output)
 
     def testMergeSortCase(self):
+        u"""测试文件样例"""
+
         self._testSortingCase(mergeSort)
 
 
