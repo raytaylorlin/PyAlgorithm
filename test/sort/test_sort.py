@@ -19,8 +19,6 @@ class TestSorting(util.PyAlgorithmTestCase):
         self.cases = util.getInputAnswerCases('data', 'sort')
 
     def _testBaseCase(self, sortFunc):
-        u"""测试正常情况（随机产生10个数）"""
-
         self.input = range(10)
         random.shuffle(self.input)
         self.correct = range(10)
