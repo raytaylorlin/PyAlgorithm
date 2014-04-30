@@ -13,10 +13,10 @@ def insertionSort(data):
     # 初始化结果为第一个数
     result = [data[0]]
     # 从第二个数开始，从后往前找应该插入的位置
-    for num in data[1:]:
+    for key in data[1:]:
         index = len(result) - 1
-        while index >= 0 and result[index] > num:
+        while index >= 0 and result[index] > key:
             index -= 1
         else:
-            result.insert(index + 1, num)
+            result.insert(index + 1, key)
     return result
