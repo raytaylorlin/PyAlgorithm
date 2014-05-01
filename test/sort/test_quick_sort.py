@@ -11,7 +11,7 @@ class TestQuickSort(TestSorting):
         u"""测试正常情况（随机产生10个数）"""
         self._testBaseCase(quickSort)
 
-    def testMergeSortCase(self):
+    def testQuickSortCase(self):
         u"""测试文件样例"""
         self._testSortingCase(quickSort)
 

@@ -5,6 +5,61 @@
 import random
 
 
+def quickSort(data):
+    # 因为快速排序所有操作均在原地进行，所以此处复制一份列表，避免破坏原数组
+    return _quickSort(data[:], 0, len(data) - 1)
+
+
+def _quickSort(data, left, right):
+    """
+    对给定的数组和给定范围进行快速排序
+    Args:
+        data: 要排序的数组
+        left: 数组的左边界索引
+        right: 数组的右边界索引
+    Return:
+        data: 排序完的数组
+    """
+
+    # 递归中止条件：数组只有1个元素
+    if right - left <= 0:
+        return 0
+
+    pivotLastIndex = partition(data, left, right)
+    _quickSort(data, left, pivotLastIndex - 1)
+    _quickSort(data, pivotLastIndex + 1, right)
+    return data
+
+
+def partition(data, left, right):
+    """
+    围绕基准数分割指定左右边界的数组
+    最后data[left:right]会呈现[<p, p, >p]的形式
+    """
+
+    # 选择基准
+    # pivotIndex = chooseFirstPivotIndex(left, right)
+    # pivotIndex = chooseLastPivotIndex(left, right)
+    # pivotIndex = chooseMedianOfThreePivotIndex(data, left, right)
+    pivotIndex = chooseRandomPivotIndex(left, right)
+
+    pivot = data[pivotIndex]
+    # 预处理：将基准放到数组第一个位置
+    data[left], data[pivotIndex] = data[pivotIndex], data[left]
+
+    i, j = left + 1, left + 1
+    while j <= right:
+        # 发现比基准小的元素，则将其交换到前面的位置
+        if data[j] < pivot:
+            data[i], data[j] = data[j], data[i]
+            i += 1
+        j += 1
+    # 记住基准数一直都位于左边界，最后要把它放到合适的中间位置
+    pivotLastIndex = i - 1
+    data[left], data[pivotLastIndex] = data[pivotLastIndex], data[left]
+    return pivotLastIndex
+
+
 def chooseFirstPivotIndex(left, right):
     """选择最左边的元素索引"""
     return left
@@ -29,57 +84,3 @@ def chooseMedianOfThreePivotIndex(data, left, right):
 def chooseRandomPivotIndex(left, right):
     """随机选择索引"""
     return random.choice(range(left, right + 1))
-
-
-def _quickSort(data, left, right):
-    """
-    对给定的数组和给定范围进行快速排序
-    Args:
-        data: 要排序的数组
-        left: 数组的左边界索引
-        right: 数组的右边界索引
-    Return:
-        data: 排序完的数组
-    """
-
-    def partition(data, left, right):
-        """
-        围绕基准数分割指定左右边界的数组
-        最后data[left:right]会呈现[<p, p, >p]的形式
-        """
-
-        # 选择基准
-        # pivotIndex = chooseFirstPivotIndex(left, right)
-        # pivotIndex = chooseLastPivotIndex(left, right)
-        # pivotIndex = chooseMedianOfThreePivotIndex(data, left, right)
-        pivotIndex = chooseRandomPivotIndex(left, right)
-
-        pivot = data[pivotIndex]
-        # 预处理：将基准放到数组第一个位置
-        data[left], data[pivotIndex] = data[pivotIndex], data[left]
-
-        i, j = left + 1, left + 1
-        while j <= right:
-            # 发现比基准小的元素，则将其交换到前面的位置
-            if data[j] < pivot:
-                data[i], data[j] = data[j], data[i]
-                i += 1
-            j += 1
-        # 记住基准数一直都位于左边界，最后要把它放到合适的中间位置
-        pivotLastIndex = i - 1
-        data[left], data[pivotLastIndex] = data[pivotLastIndex], data[left]
-        return pivotLastIndex
-
-    # 递归中止条件：数组只有1个元素
-    if right - left <= 0:
-        return 0
-
-    pivotLastIndex = partition(data, left, right)
-    _quickSort(data, left, pivotLastIndex - 1)
-    _quickSort(data, pivotLastIndex + 1, right)
-    return data
-
-
-def quickSort(data):
-    # 因为快速排序所有操作均在原地进行，所以此处复制一份列表，避免破坏原数组
-    return _quickSort(data[:], 0, len(data) - 1)
