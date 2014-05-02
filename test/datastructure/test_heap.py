@@ -19,11 +19,21 @@ class TestHeap(util.PyAlgorithmTestCase):
         u"""测试堆的获取尺寸方法"""
 
         self.input = range(5)
-        self.correct = 5
         heap = Heap(self.input)
-        self.output = heap.size()
+        self.assertEqual(5, heap.size())
 
-        self.assertEqual(self.correct, self.output)
+    def testBubbleDown(self):
+        u"""测试堆的向下冒泡调整操作"""
+
+        self.input = [3, 2, 4, 5, 1]
+        heap = Heap(self.input)
+        # 调整第2个元素
+        heap._bubbleDown(1)
+        self.assertEqual([3, 1, 4, 5, 2], heap._heap)
+
+        # 调整根元素
+        heap._bubbleDown(0)
+        self.assertEqual([1, 2, 4, 5, 3], heap._heap)
 
 
 if __name__ == '__main__':
