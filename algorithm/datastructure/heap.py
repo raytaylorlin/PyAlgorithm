@@ -5,7 +5,13 @@
 class Heap():
 
     def __init__(self, heap=[]):
+        """Heap类构造方法，对给定的数组建立最小堆
+        Args:
+            [heap]: 要建立最小堆的初始化数组，若为空则建立一个空堆
+        """
         self._heap = heap
+        for i in reversed(xrange(len(self._heap) / 2)):
+            self._bubbleDown(i)
 
     def size(self):
         """获取堆的大小"""
