@@ -18,8 +18,7 @@ class TestHeap(util.PyAlgorithmTestCase):
     def testSize(self):
         u"""测试堆的获取尺寸方法"""
 
-        self.input = range(5)
-        heap = Heap(self.input)
+        heap = Heap(range(5))
         self.assertEqual(5, heap.size())
 
     def testBubbleDown(self):
@@ -40,6 +39,18 @@ class TestHeap(util.PyAlgorithmTestCase):
 
         heap = Heap([3, 2, 6, 4, 1, 5])
         self.assertEqual([1, 2, 5, 4, 3, 6], heap._heap)
+
+    def testInsert(self):
+        u"""测试堆的插入操作"""
+
+        heap = Heap([4, 6, 5, 7])
+        heap.insert(3)
+        self.assertEqual(5, heap.size())
+        self.assertEqual([3, 4, 5, 7, 6], heap._heap)
+
+        heap.insert(1)
+        self.assertEqual(6, heap.size())
+        self.assertEqual([1, 4, 3, 7, 6, 5], heap._heap)
 
 if __name__ == '__main__':
     unittest.main()
