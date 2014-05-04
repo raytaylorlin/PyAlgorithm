@@ -17,6 +17,23 @@ class Heap():
         """获取堆的大小"""
         return len(self._heap)
 
+    def insert(self, data):
+        """在堆中插入一个元素"""
+        self._heap.append(data)
+        self._bubbleUp(len(self._heap) - 1)
+
+    def _bubbleUp(self, i):
+        """对指定下标的元素向上进行调整，以维护堆的性质"""
+        parent = (i - 1) / 2
+        while parent >= 0:
+            if self._heap[i] < self._heap[parent]:
+                self._heap[i], self._heap[parent] = \
+                    self._heap[parent], self._heap[i]
+                i = parent
+                parent = (i - 1) / 2
+            else:
+                break
+
     def _bubbleDown(self, i):
         """对指定下标的元素向下进行调整，以维护堆的性质"""
 
