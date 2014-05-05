@@ -10,6 +10,8 @@ class Heap():
             [heap]: 要建立最小堆的初始化数组，若为空则建立一个空堆
         """
         self._heap = heap
+        # 从堆的一半开始逐个节点向前调整
+        # （因为完全二叉树的后一半节点都是叶子节点，不需要调整）
         for i in reversed(xrange(len(self._heap) / 2)):
             self._bubbleDown(i)
 
@@ -22,9 +24,22 @@ class Heap():
         self._heap.append(data)
         self._bubbleUp(len(self._heap) - 1)
 
+    def extract(self):
+        """提取堆的最值"""
+
+        # 根元素总是堆的最值
+        result = self._heap[0]
+        # 交换根元素和最后一个元素，并删除掉最后一个元素
+        self._heap[0] = self._heap.pop()
+        # 交换之后可能会破坏堆的性质，需要向下调整根元素
+        self._bubbleDown(0)
+        return result
+
     def _bubbleUp(self, i):
         """对指定下标的元素向上进行调整，以维护堆的性质"""
+
         parent = (i - 1) / 2
+        # 冒泡终止条件：到达根节点或者已满足堆的性质
         while parent >= 0:
             if self._heap[i] < self._heap[parent]:
                 self._heap[i], self._heap[parent] = \

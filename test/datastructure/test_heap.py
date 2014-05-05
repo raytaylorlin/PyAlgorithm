@@ -59,12 +59,12 @@ class TestHeap(util.PyAlgorithmTestCase):
         data = heap.extract()
         self.assertEqual(1, data)
         self.assertEqual(5, heap.size())
-        self.assertEqual([2, 4, 3, 6, 5])
+        self.assertEqual([2, 4, 3, 6, 5], heap._heap)
 
         data = heap.extract()
         self.assertEqual(2, data)
         self.assertEqual(4, heap.size())
-        self.assertEqual([3, 4, 5, 6])
+        self.assertEqual([3, 4, 5, 6], heap._heap)
 
 
 if __name__ == '__main__':
