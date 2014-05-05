@@ -52,5 +52,20 @@ class TestHeap(util.PyAlgorithmTestCase):
         self.assertEqual(6, heap.size())
         self.assertEqual([1, 4, 3, 7, 6, 5], heap._heap)
 
+    def testExtract(self):
+        u"""测试堆的提取最值操作"""
+
+        heap = Heap([1, 2, 3, 4, 5, 6])
+        data = heap.extract()
+        self.assertEqual(1, data)
+        self.assertEqual(5, heap.size())
+        self.assertEqual([2, 4, 3, 6, 5])
+
+        data = heap.extract()
+        self.assertEqual(2, data)
+        self.assertEqual(4, heap.size())
+        self.assertEqual([3, 4, 5, 6])
+
+
 if __name__ == '__main__':
     unittest.main()
