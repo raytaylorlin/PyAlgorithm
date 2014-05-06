@@ -29,10 +29,11 @@ class Heap():
 
         # 根元素总是堆的最值
         result = self._heap[0]
-        # 交换根元素和最后一个元素，并删除掉最后一个元素
-        self._heap[0] = self._heap.pop()
-        # 交换之后可能会破坏堆的性质，需要向下调整根元素
-        self._bubbleDown(0)
+        if self.size() > 1:
+            # 交换根元素和最后一个元素，并删除掉最后一个元素
+            self._heap[0] = self._heap.pop()
+            # 交换之后可能会破坏堆的性质，需要向下调整根元素
+            self._bubbleDown(0)
         return result
 
     def _bubbleUp(self, i):
