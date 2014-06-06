@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from algorithm.graph.dijkstra_shotest_path import dijkstraShotestPath
+from algorithm.graph.dijkstra_shotest_path import dijkstraShortestPath
 
 
 class TestDijkstra(unittest.TestCase):
@@ -23,7 +23,7 @@ class TestDijkstra(unittest.TestCase):
 
         print 'Input: graph = {0}'.format(graph)
         print 'Input: start vertex = {0}'.format(start)
-        self.output = dijkstraShotestPath(graph, start)
+        self.output = dijkstraShortestPath(graph, start)
         print 'Result: ', self.output
         self.assertEqual(self.correct, self.output)
 
