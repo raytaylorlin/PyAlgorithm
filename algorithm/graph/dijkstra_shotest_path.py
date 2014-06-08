@@ -6,19 +6,6 @@ import sys
 INFINITY = float('inf')
 
 
-def getGraph(file):
-    graph = {}
-    for line in file.readlines():
-        data = line.strip().split(' ')
-        source = int(data[0])
-        graph[source] = []
-        for edge in data[1:]:
-            target = int(edge.split(',')[0])
-            length = int(edge.split(',')[1])
-            graph[source].append((target, length))
-    return graph
-
-
 def dijkstraShortestPath(graph, start=1):
     '''使用Dijkstra算法求单源最短路径
     Args:
@@ -36,42 +23,34 @@ def dijkstraShortestPath(graph, start=1):
     # 初始化
     vertexNum = len(graph.keys())
     processed = [start]
-    score = {}
+    pathLength = {}
     # 将起点到其它点的路径长初始化为无穷大
     for u, vList in graph.iteritems():
-        score[u] = INFINITY
+        pathLength[u] = INFINITY
         for v in vList:
-            score[v[0]] = INFINITY
+            pathLength[v[0]] = INFINITY
     # 起点到自身的长为0
-    score[start] = 0
+    pathLength[start] = 0
 
-    for i in range(len(score.keys()) - 1):
-        minScore = INFINITY
-        print processed
+    for i in range(len(pathLength.keys()) - 1):
+        minPathLength = INFINITY
+        # print processed
         for v in processed:
+            if not graph.has_key(v):
+                graph[v] = []
             for w, length in graph[v]:
                 # 防止出度为0的点在图graph中没有被记录下来
                 if not graph.has_key(w):
                     graph[w] = []
-                if w not in processed and score[v] + length < minScore:
-                    minScore = score[v] + length
+                if w not in processed and pathLength[v] + length < minPathLength:
+                    minPathLength = pathLength[v] + length
                     vstar = v
                     wstar = w
-                    print 'v, w =', v, w
-                    print 'minScore = ', minScore
-        if minScore < INFINITY:
+                    # print 'v, w =', v, w
+                    # print 'minPathLength = ', minPathLength
+        if minPathLength < INFINITY:
             processed.append(wstar)
-            print 'wstar, min = ', wstar, minScore
-            score[wstar] = minScore
+            # print 'wstar, min = ', wstar, minPathLength
+            pathLength[wstar] = minPathLength
 
-    return score
-
-if __name__ == '__main__':
-    with open('dijkstra5.in') as file:
-    # with open('3.txt') as file:
-        graph = getGraph(file)
-        # print 'graph: ', graph
-        result = dijkstraShortestPath(graph, 1)
-
-        for k, v in result.iteritems():
-            print '{0}: {1}'.format(k, v)
+    return pathLength
