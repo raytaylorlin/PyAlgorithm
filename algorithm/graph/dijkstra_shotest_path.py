@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from collections import defaultdict
+
 INFINITY = float('inf')
 
 
@@ -18,17 +20,14 @@ def dijkstraShortestPath(graph, start=1):
     '''
 
     # 初始化
-    processed = set([start])
+    graph = defaultdict(list, graph)
     distance = {}
+    processed = set([start])
     # 不能到点的路径长设为无穷大
     for u, vList in graph.iteritems():
         distance[u] = INFINITY
-        for v in vList:
-            distance[v[0]] = INFINITY
-    # 补齐邻接表表示的图缺少的key
-    for v in distance.keys():
-        if not v in graph:
-            graph[v] = []
+        for v, l in vList:
+            distance[v] = INFINITY
     # 将起点到它能到的点设为其距离
     for v, l in graph[start]:
         distance[v] = l
