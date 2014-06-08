@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys
-
 INFINITY = float('inf')
 
 
@@ -16,41 +14,42 @@ def dijkstraShortestPath(graph, start=1):
         } 表示边(1,2)长为1，边(1,3)长为5，边(4,2)长为7
         start: 起点（默认为顶点1）
     Returns:
-        归并排序后的数组
-
+        从start到图中其它各点的最短距离字典
     '''
 
     # 初始化
-    vertexNum = len(graph.keys())
-    processed = [start]
-    pathLength = {}
-    # 将起点到其它点的路径长初始化为无穷大
+    processed = set([start])
+    distance = {}
+    # 不能到点的路径长设为无穷大
     for u, vList in graph.iteritems():
-        pathLength[u] = INFINITY
+        distance[u] = INFINITY
         for v in vList:
-            pathLength[v[0]] = INFINITY
-    # 起点到自身的长为0
-    pathLength[start] = 0
+            distance[v[0]] = INFINITY
+    # 补齐邻接表表示的图缺少的key
+    for v in distance.keys():
+        if not v in graph:
+            graph[v] = []
+    # 将起点到它能到的点设为其距离
+    for v, l in graph[start]:
+        distance[v] = l
+    distance[start] = 0
 
-    for i in range(len(pathLength.keys()) - 1):
-        minPathLength = INFINITY
-        # print processed
-        for v in processed:
-            if not graph.has_key(v):
-                graph[v] = []
-            for w, length in graph[v]:
-                # 防止出度为0的点在图graph中没有被记录下来
-                if not graph.has_key(w):
-                    graph[w] = []
-                if w not in processed and pathLength[v] + length < minPathLength:
-                    minPathLength = pathLength[v] + length
-                    vstar = v
-                    wstar = w
-                    # print 'v, w =', v, w
-                    # print 'minPathLength = ', minPathLength
-        if minPathLength < INFINITY:
-            processed.append(wstar)
-            # print 'wstar, min = ', wstar, minPathLength
-            pathLength[wstar] = minPathLength
+    # 算法主循环
+    for i in range(len(distance.keys()) - 1):
+        minDistance = INFINITY
+        selected = None
+        # 找出离起点最近且没有被处理过的点
+        for j in distance.keys():
+            if j not in processed and distance[j] < minDistance:
+                minDistance = distance[j]
+                selected = j
 
-    return pathLength
+        if selected != None:
+            # 标记该点已处理过
+            processed.add(selected)
+            # 更新剩余的点：若经过selected可以使路径更短，则更新
+            for target, length in graph[selected]:
+                distance[target] = min(
+                    distance[target], distance[selected] + length)
+
+    return distance
