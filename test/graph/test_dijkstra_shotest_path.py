@@ -3,6 +3,7 @@
 
 import unittest
 import test.util as util
+import difflib
 from algorithm.graph.dijkstra_shotest_path import *
 
 
@@ -10,9 +11,10 @@ class TestDijkstra(unittest.TestCase):
 
     def setUp(self):
         self.cases = util.getCases('data', 'dijkstra')
+        print "\n[TEST]", self.shortDescription()
 
     def testBaseCase(self):
-        '''测试正常情况'''
+        u'''测试正常情况'''
 
         graph = {
             1: [(2, 1), (3, 4)],
@@ -34,7 +36,7 @@ class TestDijkstra(unittest.TestCase):
         self.assertEqual(self.correct, self.output)
 
     def testSomeVerticeUnreachable(self):
-        '''测试从起点开始，有个别顶点不可达的情况'''
+        u'''测试从起点开始，有个别顶点不可达的情况'''
 
         graph = {
             1: [(2, 1), (3, 2)],
@@ -55,7 +57,7 @@ class TestDijkstra(unittest.TestCase):
         self.assertEqual(self.correct, self.output)
 
     def testAllVerticesUnreachable(self):
-        '''测试从起点开始，所有顶点不可达的情况'''
+        u'''测试从起点开始，所有顶点不可达的情况'''
 
         graph = {
             1: [(2, 1), (3, 2)],
@@ -71,30 +73,41 @@ class TestDijkstra(unittest.TestCase):
         self.output = dijkstraShortestPath(graph, start)
         self.assertEqual(self.correct, self.output)
 
+    # @unittest.skip('test from file')
+    def testDijkstraCase(self):
+        u'''测试文件样例'''
 
-    # def testDijkstraCase(self):
-    #     for inputFile, answerFile in self.cases:
-    #         print '*' * 20
-    #         print 'Test case: ' + inputFile
-    #         self.input = getStandardData(inputFile)
-    #         self.correct = getStandardData(answerFile)
-    #         self.output = mergeSort(self.input)
+        def standardizeInput(content):
+            graph = {}
+            for line in content.split('\n'):
+                data = line.strip().split(' ')
+                graph[int(data[0])] = [(int(edge.split(',')[0]), int(edge.split(',')[1]))
+                                       for edge in data[1:]]
+            return graph
 
-    #         diff = difflib.context_diff(
-    #             map(str, self.correct), map(str, self.output),
-    #             fromfile='answer', tofile='result', n=1)
-    #         diffResult = '\n'.join(diff)
-    #         print diffResult
-    #         self.assertTrue(len(diffResult) == 0, 'Wrong answer!')
+        def standaradizeAnswer(content):
+            pathLength = {}
+            for line in content.split('\n'):
+                edge = line.split(': ')
+                pathLength[int(edge[0])] = int(edge[1])
+            return pathLength
 
+        for inputFile, answerFile in self.cases:
+            print '*' * 20
+            print 'Test case: ' + inputFile
+            self.input = util.readFileAndStandardize(
+                inputFile, standardizeInput)
+            self.correct = util.readFileAndStandardize(
+                answerFile, standaradizeAnswer)
+            self.output = dijkstraShortestPath(self.input, 1)
 
-class DataReader:
+            diff = difflib.context_diff(
+                map(str, self.correct), map(str, self.output),
+                fromfile='answer', tofile='result', n=1)
+            diffResult = '\n'.join(diff)
+            print diffResult
+            self.assertTrue(len(diffResult) == 0, 'Wrong answer!')
 
-    def readStandardInput(inputFile):
-        pass
-
-    def readStandardOutput(outputFile):
-        pass
 
 if __name__ == '__main__':
     unittest.main()
