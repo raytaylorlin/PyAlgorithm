@@ -10,11 +10,11 @@ from algorithm.graph.dijkstra_shotest_path import *
 class TestDijkstra(unittest.TestCase):
 
     def setUp(self):
-        self.cases = util.getCases('data', 'dijkstra')
+        self.cases = util.getInputAnswerCases('data', 'dijkstra')
         print "\n[TEST]", self.shortDescription()
 
     def testBaseCase(self):
-        u'''测试正常情况'''
+        u"""测试正常情况"""
 
         graph = {
             1: [(2, 1), (3, 4)],
@@ -36,7 +36,7 @@ class TestDijkstra(unittest.TestCase):
         self.assertEqual(self.correct, self.output)
 
     def testSomeVerticeUnreachable(self):
-        u'''测试从起点开始，有个别顶点不可达的情况'''
+        u"""测试从起点开始，有个别顶点不可达的情况"""
 
         graph = {
             1: [(2, 1), (3, 2)],
@@ -57,7 +57,7 @@ class TestDijkstra(unittest.TestCase):
         self.assertEqual(self.correct, self.output)
 
     def testAllVerticesUnreachable(self):
-        u'''测试从起点开始，所有顶点不可达的情况'''
+        u"""测试从起点开始，所有顶点不可达的情况"""
 
         graph = {
             1: [(2, 1), (3, 2)],
@@ -75,7 +75,7 @@ class TestDijkstra(unittest.TestCase):
 
     # @unittest.skip('test from file')
     def testDijkstraCase(self):
-        u'''测试文件样例'''
+        u"""测试文件样例"""
 
         def standardizeInput(content):
             graph = {}
