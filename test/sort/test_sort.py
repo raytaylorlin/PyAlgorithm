@@ -3,27 +3,29 @@
 
 import random
 import unittest
+import difflib
 import test.util as util
-
-
-TEST_CASE_DIR = 'data'
 
 
 class TestSorting(unittest.TestCase):
 
     def setUp(self):
-        self.cases = util.getCases(TEST_CASE_DIR)
+        self.cases = util.getInputAnswerCases('data', 'sort')
 
-    def getStandardData(self, dataFile):
-        """读取文件内容，并将数据转换为标准形式
-        Args:
-            dataFile: 存放数据的文件（在排序测试中，文件应该是每行1个整数）
-        Return:
-            一个整数列表
-        """
-        with open(dataFile) as file:
-            data = file.read()
-        return self.__standardize(data)
+    def _testSortingCase(self, sortFunc):
+        def standardize(content):
+            return list(map(int, content.split('\n')))
 
-    def __standardize(self, data):
-        return list(map(int, data.split('\n')))
+        for inputFile, answerFile in self.cases:
+            print '*' * 20
+            print 'Test case: ' + inputFile
+            self.input = util.readFileAndStandardize(inputFile, standardize)
+            self.correct = util.readFileAndStandardize(answerFile, standardize)
+            self.output = sortFunc(self.input)
+
+            diff = difflib.context_diff(
+                map(str, self.correct), map(str, self.output),
+                fromfile='answer', tofile='result', n=1)
+            diffResult = '\n'.join(diff)
+            print diffResult
+            self.assertTrue(len(diffResult) == 0, 'Wrong answer!')
